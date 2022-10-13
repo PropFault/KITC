@@ -1,0 +1,3 @@
+/home/biggest/git/KITC/cmake-build-debug/CMakeFiles/KITC.dir
+/home/biggest/git/KITC/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/biggest/git/KITC/cmake-build-debug/CMakeFiles/rebuild_cache.dir

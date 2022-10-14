@@ -1,4 +1,11 @@
 /snap/clion/209/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/209/bin/ninja/linux/ninja -G Ninja -S /home/biggest/git/KITC -B /home/biggest/git/KITC/cmake-build-debug
+-- Conan: Adjusting output directories
+-- Conan: Using cmake global configuration
+-- Conan: Adjusting default RPATHs Conan policies
+-- Conan: Adjusting language standard
+-- Current conanbuildinfo.cmake directory: /home/biggest/git/KITC/cmake-build-debug
+-- Conan: Compiler GCC>=5, checking major version 11
+-- Conan: Checking correct version: 11
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/biggest/git/KITC/cmake-build-debug

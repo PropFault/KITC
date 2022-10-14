@@ -1,0 +1,6 @@
+[requires]
+sdl/2.24.0
+stb/cci.20210910
+
+[generators]
+cmake

@@ -45,11 +45,18 @@ public:
         auto resource_reg = SDLResourceRegistry(*sdlrenderer);
         auto renderer = SDLRenderer(resource_reg, sdlrenderer);
 
-        auto texture_id = resource_reg.registerTexture(ImageLoader().load(FileResource(std::filesystem::path("/home/biggest/git/KITC/source/file.jpg"))));
+        auto texture_id = resource_reg.registerTexture(ImageLoader().load(FileResource(std::filesystem::path("/home/biggest/git/KITC/source/file.png"))));
         auto texture_ticket_comp = DataComponent<uint64_t>();
         texture_ticket_comp.setTypeId(123);
         texture_ticket_comp.setData(texture_id);
         auto texture_comp_id = ticket_component_pool.reserve(std::move(texture_ticket_comp));
+        renderer.clear();
+        renderer.drawTex(texture_id, 0,0, 300, 300);
+        renderer.present();
+        while(true){
+            SDL_Event event;
+            SDL_PollEvent(&event);
+        }
     }
 };
 /*

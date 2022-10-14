@@ -1,7 +1,7 @@
 #pragma once
 #include "loader.h"
-#include "../stb/stb_image.h"
 #include <iostream>
+#include <stb_image.h>
 enum PixelFormat{
     RGB,
     RGBA
@@ -19,11 +19,11 @@ class ImageLoader : Loader<ImageRaw>{
 public:
     ImageRaw load(Resource&& resource)override{
         auto handle = resource.read();
-        std::vector<unsigned char> data((std::istream_iterator<unsigned char>(*handle)), std::istream_iterator<unsigned char>());
+        std::vector<char> data((std::istreambuf_iterator<char>(*handle)), std::istreambuf_iterator<char>());
         int width;
         int height;
         int channels;
-        auto res = stbi_load_from_memory(data.data(), data.size(), &width, &height, &channels, 0);
+        auto res = stbi_load_from_memory((unsigned char*)data.data(), data.size(), &width, &height, &channels, 0);
         auto error = stbi_failure_reason();
         if(res == nullptr){
             throw std::runtime_error(std::string ("FAILED TO LOAD IMAGE: ") + error);
@@ -31,7 +31,7 @@ public:
         if(error != nullptr)
             std::cout<<error<<std::endl;
         return ImageRaw{
-            .data = std::vector<uint8_t>(res,res+(width*height*channels)),
+                .data = std::vector<uint8_t>(res,res+(width*height*channels)),
                 .width = (uint32_t)width,
                 .height = (uint32_t)height,
                 .pitch = (uint32_t)width*channels,

@@ -15,7 +15,7 @@ public:
     uint64_t registerTexture(const ImageRaw &image) override {
         auto ticket = random.u64();
         ImageRaw imageCopy(image);
-        auto surface = SDL_CreateRGBSurfaceWithFormatFrom(imageCopy.data.data(), image.width, image.height, 8, image.pitch, (image.format == RGB ? SDL_PIXELFORMAT_RGB888 : SDL_PIXELFORMAT_RGBA8888));
+        auto surface = SDL_CreateRGBSurfaceWithFormatFrom(imageCopy.data.data(), image.width, image.height, 8, image.pitch, (image.format == RGB ? SDL_PIXELFORMAT_BGR888 : SDL_PIXELFORMAT_ABGR8888));
         this->textures.emplace(ticket, SDL_CreateTextureFromSurface(&renderer, surface));
         SDL_FreeSurface(surface);
         return ticket;

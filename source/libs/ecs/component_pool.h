@@ -4,6 +4,7 @@
 #include <functional>
 #include <string>
 class Component{
+public:
     [[nodiscard]]
     virtual Component* clone()const = 0;
     virtual void reset() = 0;
@@ -25,6 +26,7 @@ public:
 
 template <class T>
 class ComponentPool{
+public:
     virtual uint64_t reserve(T&& source) = 0;
     virtual uint64_t reserve(std::function<void(T&)> init) = 0;
     virtual void free(uint64_t ticket) = 0;

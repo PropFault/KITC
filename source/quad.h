@@ -1,4 +1,4 @@
-
+#pragma once
 
 template<class T>
 class Quad{
@@ -8,6 +8,9 @@ private:
     T w;
     T h;
 public:
+    Quad() = default;
+    Quad(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
+
     T getX() const {
         return x;
     }

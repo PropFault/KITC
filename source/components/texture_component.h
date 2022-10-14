@@ -1,4 +1,7 @@
 #pragma once
+#include "abstract_data_component.h"
+
+DEFINE_DATA_COMPONENT(TextureComponent, uint64_t, 12031203105);
 
 /*use stb::sync::{Arc, RwLock};
 use crate::FileResource;

@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 /*use stb::ops::{Add, Div, Mul, Sub};
 
 pub fn normalise_range<T>(value : T, ceil : T, floor : T) -> T

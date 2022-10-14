@@ -1,46 +1,59 @@
 #pragma once
-/*use stb::ops::Deref;
-use crate::libs::ecs::component_pool::Component;
-
-trait SpriteMaterial : Component{
-    fn get_active_texture(&mut self) -> u64;
-    fn update(&mut self, delta : f32);
-}
-
-struct Sprite{
-    pub frames : Vec<u64>,
-    pub fps : f32,
-    timer : f32
-}
-
-impl Component for Sprite {
-    fn new() -> Self {
-        Sprite{
-            frames: Vec::new(),
-            fps: 0.0,
-            timer: 0.0
-        }
+#include "../libs/ecs/component_pool.h"
+#include <cinttypes>
+#include <vector>
+#include "../libs/math/floating_point.h"
+class SpriteMaterial : Component{
+private:
+    std::vector<uint64_t> frames;
+    float fps = 0;
+    double timer = 0;
+public:
+    [[nodiscard]]
+    uint64_t getActiveTexture()const{
+        auto totalFrames = (uint32_t) round((this->timer * this->fps));
+        auto index = totalFrames % this->frames.size();
+        return this->frames[index];
     }
 
-    fn reset(&mut self) {
-        self.frames.clear();
-        self.fps = 0.0;
-        self.timer = 0.0;
+    void update(double delta){
+        this->timer += delta;
     }
 
-    fn get_type_id() -> u64 {
-        return 912939455231;
-    }
-}
-
-impl SpriteMaterial for Sprite{
-    fn get_active_texture(&mut self) -> u64 {
-        let total_frames = (self.timer * self.fps).round() as usize;
-        let index = total_frames % self.frames.len();
-        return self.frames[index];
+    [[nodiscard]] Component *clone() const override {
+        return new SpriteMaterial(*this);
     }
 
-    fn update(&mut self, delta: f32) {
-        self.timer += delta;
+    void reset() override {
+        this->frames.clear();
+        this->timer = this->fps = 0;
     }
-}*/
+
+    [[nodiscard]] uint64_t getTypeId() const override {
+        return 545156168432131861;
+    }
+
+    const std::vector<uint64_t> &getFrames() const {
+        return frames;
+    }
+
+    void setFrames(const std::vector<uint64_t> &frames) {
+        SpriteMaterial::frames = frames;
+    }
+
+    float getFps() const {
+        return fps;
+    }
+
+    void setFps(float fps) {
+        SpriteMaterial::fps = fps;
+    }
+
+    double getTimer() const {
+        return timer;
+    }
+
+    void setTimer(double timer) {
+        SpriteMaterial::timer = timer;
+    }
+};

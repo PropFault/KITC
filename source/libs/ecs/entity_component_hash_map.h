@@ -5,7 +5,7 @@
 #include <cinttypes>
 #include <vector>
 
-class EntityComponentHashMap : EntityComponentMap{
+class EntityComponentHashMap : public EntityComponentMap{
 private:
     // um        um             set
     // type -> (entities -> [components])

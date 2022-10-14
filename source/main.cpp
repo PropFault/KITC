@@ -28,7 +28,6 @@
 #include "quad.h"
 #include <SDL2/SDL.h>
 #include "libs/ecs/component_pool_hash_map.h"
-#include "components/data_component.h"
 #include <filesystem>
 
 class Game{
@@ -40,22 +39,28 @@ public:
         auto window = SDL_CreateWindow("my window", 0, 0, 300, 300, 0);
         auto sdlrenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-        auto quad_component_pool = ComponentPoolHashMap<DataComponent<Quad<float>>>();
-        auto ticket_component_pool = ComponentPoolHashMap<DataComponent<uint64_t>>();
-        auto resource_reg = SDLResourceRegistry(*sdlrenderer);
-        auto renderer = SDLRenderer(resource_reg, sdlrenderer);
+        EntityComponentHashMap ecs;
+        ComponentPoolHashMap<QuadComponent> quadPool;
+        ComponentPoolHashMap<TextureComponent> texturePool;
+        SDLResourceRegistry resource_reg(*sdlrenderer);
+        SDLRenderer renderer(resource_reg, sdlrenderer);
+        std::vector<std::shared_ptr<System>> systems;
+        systems.push_back(std::make_shared<QuadRenderSystem>(texturePool, quadPool, renderer));
+        SystemPump pump(systems, ecs);
 
         auto texture_id = resource_reg.registerTexture(ImageLoader().load(FileResource(std::filesystem::path("/home/biggest/git/KITC/source/file.png"))));
-        auto texture_ticket_comp = DataComponent<uint64_t>();
-        texture_ticket_comp.setTypeId(123);
-        texture_ticket_comp.setData(texture_id);
-        auto texture_comp_id = ticket_component_pool.reserve(std::move(texture_ticket_comp));
-        renderer.clear();
-        renderer.drawTex(texture_id, 0,0, 300, 300);
-        renderer.present();
+        auto texture_comp_id = texturePool.reserve(TextureComponent(texture_id));
+        auto quad_ticket = quadPool.reserve(QuadComponent(
+                RenderQuad(0,0,200,200,texture_comp_id)));
+        uint64_t entity = 123124215;
+        ecs.addComponent(entity, TextureComponent::TYPE_ID, texture_comp_id);
+        ecs.addComponent(entity, QuadComponent::TYPE_ID, quad_ticket);
         while(true){
             SDL_Event event;
             SDL_PollEvent(&event);
+            renderer.clear();
+            pump.pump();
+            renderer.present();
         }
     }
 };

@@ -1,4 +1,30 @@
 #pragma once
+#include "../libs/ecs/system.h"
+#include "../libs/ecs/component_pool.h"
+#include "../components/texture_component.h"
+#include "../components/quad_component.h"
+#include "../libs/rendering/renderer.h"
+
+class QuadRenderSystem :public System{
+private:
+    ComponentPool<TextureComponent> &textures;
+    ComponentPool<QuadComponent> &quads;
+    Renderer &renderer;
+public:
+    QuadRenderSystem(ComponentPool<TextureComponent> &textures, ComponentPool<QuadComponent> &quads, Renderer &renderer)
+            : textures(textures), quads(quads), renderer(renderer) {}
+
+    void think(uint64_t entity, uint64_t component, double delta) override {
+        auto quadT = quads.checkout(component);
+        auto quad = quadT.getData()->getData();
+        auto texT = textures.checkout(quad.getMaterial());
+        renderer.drawTex(texT.getData()->getData(), quad.getX(), quad.getY(), quad.getW(), quad.getH());
+    }
+
+    uint64_t getHandeledType() const override {
+        return QuadComponent::TYPE_ID;
+    }
+};
 /*use stb::cell::RefCell;
 use stb::sync::{Arc, RwLock};
 use crate::{Renderer, TextureComponent};
